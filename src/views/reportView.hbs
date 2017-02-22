@@ -99,21 +99,54 @@
         <!-- /cont -->
 
     </div>
-
-
     <div class="container">
         <div class="row">
-
             <div class="col-md-12">
-
                 <div class="panel">
                     <div class="panel-body">
-                        main page here
+                        <div>
+                            <span class="red">{{errorMessage}}</span>
+                            <form class="well" action="/report" name="generate-report" mehtod="get">
+                                From: <input type="date" name="since"> Till: <input type="date" name="until"> </br>
+                                Git Username:<input type="text" name="username" value="{{userInfo.username}}"> 
+                                Git Reponame:<input type="text" name="reponame" value="{{userInfo.reponame}}"> 
+                                Git Branch:<input type="text" name="sha" value="{{queryParam.branch}}"> </br>
+                                Git Token: <input type="text" name="token" value="{{userInfo.token}}">(for private git repo only*)</br>
+                                <input class="btn btn-primary" type="submit" value="Generate">
+                            </form>
+                        </div>
+                        <h1>Commits</h1>
+                        <ul>
+                            {{#each repoDatas}}
+                            <li>
+                                <span>
+                                    {{this.committedDate}} |
+                                    {{this.committedBy}} | 
+                                    {{this.commitMessage}} 
+                                 </span>
+                                <br>
+                            </li>
+                            {{/each}}
+                        </ul>
+
+                        <h1>Report</h1>
+                        <ul>
+                            {{#each reportDatas}}
+                            <li>
+                                <span>
+                                   {{this.committedDate}} |
+                                   {{this.committedBy}} | 
+                                   {{this.taskId}} |
+                                   {{this.taskTitle}} |
+                                   {{this.taskTimeSpent}} mins |
+                                   {{this.taskStatus}}
+                                </span>
+                                <br>
+                            </li>
+                            {{/each}}
+                        </ul>
                     </div>
                 </div>
-
-
-
             </div>
             <!--/col-12-->
         </div>
