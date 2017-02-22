@@ -1,0 +1,38 @@
+{
+  "name": "psr-generator",
+  "description": "extract data from git hub repository and generate a daily/weekly or monthy report",
+  "main": "index.js",
+  "authors": [
+    "Suchan Badyakar"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/cmtanko/psr_creator",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.min.css",
+        "less/bootstrap.less"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "less/font-awesome.less",
+        "css/font-awesome.min.css",
+        "scss/font-awesome.scss"
+      ]
+    }
+  }
+}
