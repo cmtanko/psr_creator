@@ -1,9 +1,8 @@
 var express = require('express');
-var querystring= require('querystring');
+var querystring = require('querystring');
 var app = express();
 
-var port = process.env.port || 3000;
-
+var port = process.env.PORT || 3000;
 //SETUP PUBLIC DIRCTORY
 app.use(express.static('public'));
 
@@ -22,6 +21,6 @@ app.get('/', function (req, res) {
 });
 
 
-app.listen(port, function (err) {
-    console.log('running server on port ' + port);
+app.listen(process.env.PORT || 3000, function (err) {
+    console.log('running server on port ' + process.env.PORT || 3000);
 });
