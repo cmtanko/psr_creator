@@ -58,7 +58,7 @@ var reportController = function (reportService, querystring) {
         userInfo['token'] = query['token'] === undefined || query['token'] === '' ? '' : 'token ' + query['token'];
         if (userInfo.username === undefined || userInfo.reponame === undefined || userInfo.username === '' || userInfo.reponame === '') {
             res.render('reportView', {
-                errorMessage: 'username and reponame is required'
+                errorMessage: 'git username and reponame is required'
             });
             return;
         } else {

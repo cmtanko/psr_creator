@@ -46,23 +46,14 @@
             <nav class="collapse navbar-collapse" role="navigation">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="">Report</a>
+                        <a href="/report">Report</a>
                     </li>
+                    {{!--
                     <li>
                         <a href="">Login</a>
-                    </li>
+                    </li>--}}
                 </ul>
-                <ul class="nav navbar-right navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
-                        <ul class="dropdown-menu" style="padding:12px;">
-                            <form class="form-inline">
-                                <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-search"></i></button><input
-                                    type="text" class="form-control pull-left" placeholder="Search">
-                            </form>
-                        </ul>
-                    </li>
-                </ul>
+                
             </nav>
         </div>
     </header>
@@ -76,14 +67,7 @@
                     </h1>
                 </div>
                 <div class="col-md-5">
-                    <div class="well well-lg">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                -Update infos
 
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -92,7 +76,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="top-spacer"> </div>
                 </div>
             </div>
         </div>
@@ -105,15 +88,17 @@
         <div class="row">
 
             <div class="col-md-12">
-
                 <div class="panel">
                     <div class="panel-body">
-                        main page here
+                        <h1>Create PSR report easily from your git repo</h1>
+                        <div class="well">
+                            For effective result, git commit should be follow following convention<br>
+                            PROJECTNAME-TASKID -m COMMIT MESSAGE -t TIME SPENT -s WIP/COMPLETED<br>
+                            eg.<br>
+                            ACT-259 -m "Created a student list component" -t 30 mins -s Completed
+                        </div>
                     </div>
                 </div>
-
-
-
             </div>
             <!--/col-12-->
         </div>
