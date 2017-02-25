@@ -1,5 +1,5 @@
 var express = require('express');
-var querystring= require('queryString');
+var querystring= require('querystring');
 var app = express();
 
 var port = process.env.port || 3000;
