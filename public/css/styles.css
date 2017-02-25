@@ -170,4 +170,5 @@ a,a:hover {
 .report_row th{
   border-style: solid;
   border-radius: 0.5px;
+  padding-left: 5px;
 }

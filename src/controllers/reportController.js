@@ -4,12 +4,32 @@ var reportController = function (reportService, querystring) {
 
     var onRepoDataRetrivedSuccessfully = function (repoDatas, res) {
         reportService.getGitCommitsReport(repoDatas, function (err, reportDatas) {
-            res.render('reportView', {
-                reportPage: 'Hello from report Page',
-                repoDatas: repoDatas,
-                reportDatas: reportDatas,
-                userInfo: userInfo,
-                queryParam: queryParam
+            reportService.getUserList(repoDatas, function (err, userDatas) {
+                console.log(userDatas);
+                var commitsByUsers = [];
+                userDatas.forEach(function (a) {
+                    var newObject = {
+                        'user': a,
+                        'commits': []
+                    };
+                    var counter = 1;
+                    reportDatas.forEach(function (r) {
+                        if (a === r.committedBy) {
+                            r.id = counter++;
+                            newObject['commits'].push(r);
+                        }
+                    }, this);
+                    commitsByUsers.push(newObject);
+                }, this);
+
+                console.log(commitsByUsers);
+                res.render('reportView', {
+                    reportPage: 'Hello from report Page',
+                    repoDatas: repoDatas,
+                    userInfo: userInfo,
+                    queryParam: queryParam,
+                    commitsByUsers: commitsByUsers
+                });
             });
         });
     };
@@ -28,9 +48,7 @@ var reportController = function (reportService, querystring) {
         if (query.author !== '' && query.author !== undefined) {
             queryParam['author'] = query.author;
         }
-        // if (query.per_page !== '') {
-        //     queryParam['per_page'] = '100';
-        // }
+        queryParam['per_page'] = '100';
         if (query.sha !== '' && query.sha !== undefined) {
             queryParam['sha'] = query['sha']
         }
@@ -57,9 +75,12 @@ var reportController = function (reportService, querystring) {
         }
     }
 
+
     return {
         getReport: getReport
     };
+
+
 };
 
 module.exports = reportController;

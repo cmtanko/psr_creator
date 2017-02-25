@@ -5,16 +5,22 @@ var headers = {
 }
 
 
-var reportService = function (querystring) {
-    var getGitCommits = function (queryParamStr, userInfo, cb) {
-        console.log('toke = ' + userInfo.token);
-        console.log('https://api.github.com/repos/' + userInfo.username + '/' + userInfo.reponame + '/commits?' + queryParamStr);
 
+var reportService = function (querystring) {
+    var getUserList = function (repoDatas, cb) {
+        var userList = [];
+        repoDatas.forEach(function (r) {
+            if (!_.includes(userList, r.committedBy) && r.committedBy.toLowerCase() !== "github") {
+                userList.push(r.committedBy);
+            }
+        }, this);
+        cb(null, userList);
+    };
+
+    var getGitCommits = function (queryParamStr, userInfo, cb) {
         if (userInfo.token !== undefined && userInfo.token.trim() !== "") {
-            console.log('...' + JSON.stringify(userInfo));
             headers['Authorization'] = userInfo.token;
         }
-        console.log(JSON.stringify(headers));
 
         request.get({
             uri: 'https://api.github.com/repos/' + userInfo.username + '/' + userInfo.reponame + '/commits?' + queryParamStr,
@@ -22,9 +28,7 @@ var reportService = function (querystring) {
             headers: headers
         }, function (err, response, body) {
             if (response.statusCode === 200) {
-                console.log('error =' + JSON.stringify(response));
                 var results = JSON.parse(body);
-                console.log("result= " + results.message);
                 var repoDatas = [];
 
                 results.forEach(function (c) {
@@ -148,7 +152,8 @@ var reportService = function (querystring) {
 
     return {
         getGitCommits: getGitCommits,
-        getGitCommitsReport: getGitCommitsReport
+        getGitCommitsReport: getGitCommitsReport,
+        getUserList: getUserList
     };
 };
 

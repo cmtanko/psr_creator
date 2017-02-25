@@ -132,18 +132,23 @@
                         </ul>
 
                         <h1>Report</h1>
+
                         <div class="col-md-12">
+                            {{#each commitsByUsers}} 
+                            <h2>{{this.user}}</h2>
                             <table style="width:100%;">
-                                {{#each reportDatas}}
+                                {{#each this.commits}}
                                 <tr class="report_row">
-                                    <th>{{@index}}</th>
-                                    <th>{{this.committedBy}}</th>
-                                    <th>{{this.taskTitle}}</th>
-                                    <th>{{this.taskStatus}}</th>
-                                    <th>{{this.taskTimeSpent}} mins</th>
+                                    <th style="width:5%; text-align: center;">{{this.id}}</th>
+                                    <th></th>
+                                    <th style="width:75%">{{this.taskTitle}}</th>
+                                    <th style="width:10%; text-align: center;">{{this.taskStatus}}</th>
+                                    <th style="width:10%; text-align: center;">{{this.taskTimeSpent}} mins</th>
                                 </tr>
                                 {{/each}}
                             </table>
+                            <br>
+                            {{/each}}
                         </div>
 
                     </div>
