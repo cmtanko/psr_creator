@@ -2,6 +2,18 @@ var reportController = function (reportService, querystring) {
     var userInfo = {};
     var queryParam = {};
 
+    var onRepoDataRetrivedSuccessfully = function (repoDatas, res) {
+        reportService.getGitCommitsReport(repoDatas, function (err, reportDatas) {
+            res.render('reportView', {
+                reportPage: 'Hello from report Page',
+                repoDatas: repoDatas,
+                reportDatas: reportDatas,
+                userInfo: userInfo,
+                queryParam: queryParam
+            });
+        });
+    };
+
     var getReport = function (req, res) {
         var query = req.query;
         queryParam = {};
@@ -16,14 +28,12 @@ var reportController = function (reportService, querystring) {
         if (query.author !== '' && query.author !== undefined) {
             queryParam['author'] = query.author;
         }
-        if (query.per_page !== '') {
-            //queryParam['per_page'] = '100';
-        }
+        // if (query.per_page !== '') {
+        //     queryParam['per_page'] = '100';
+        // }
         if (query.sha !== '' && query.sha !== undefined) {
             queryParam['sha'] = query['sha']
         }
-
-        console.log("->" + querystring.stringify(queryParam));
 
         userInfo['username'] = query['username'];
         userInfo['reponame'] = query['reponame'];
@@ -45,20 +55,7 @@ var reportController = function (reportService, querystring) {
                 onRepoDataRetrivedSuccessfully(repoDatas, res)
             });
         }
-
     }
-
-    var onRepoDataRetrivedSuccessfully = function (repoDatas, res) {
-        reportService.getGitCommitsReport(repoDatas, function (err, reportDatas) {
-            res.render('reportView', {
-                reportPage: 'Hello from report Page',
-                repoDatas: repoDatas,
-                reportDatas: reportDatas,
-                userInfo: userInfo,
-                queryParam: queryParam
-            });
-        });
-    };
 
     return {
         getReport: getReport
