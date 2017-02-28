@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 var reportController = function (reportService, querystring) {
     var userInfo = {};
     var queryParam = {};
@@ -5,7 +7,6 @@ var reportController = function (reportService, querystring) {
     var onRepoDataRetrivedSuccessfully = function (repoDatas, res) {
         reportService.getGitCommitsReport(repoDatas, function (err, reportDatas) {
             reportService.getUserList(repoDatas, function (err, userDatas) {
-                console.log(userDatas);
                 var commitsByUsers = [];
                 userDatas.forEach(function (a) {
                     var newObject = {
@@ -36,27 +37,20 @@ var reportController = function (reportService, querystring) {
 
     var getReport = function (req, res) {
         var query = req.query;
-        queryParam = {};
-        userInfo = {};
-        var today = new Date();
-        if (query.since !== '' && query.since !== undefined) {
-            queryParam['since'] = query.since;
-        }
-        if (query.until !== '' && query.until !== undefined) {
-            queryParam['until'] = query.until;
-        }
-        if (query.author !== '' && query.author !== undefined) {
-            queryParam['author'] = query.author;
-        }
-        queryParam['per_page'] = '100';
-        if (query.sha !== '' && query.sha !== undefined) {
-            queryParam['sha'] = query['sha']
-        }
 
+        userInfo = {};
         userInfo['username'] = query['username'];
         userInfo['reponame'] = query['reponame'];
         userInfo['token'] = query['token'] === undefined || query['token'] === '' ? '' : 'token ' + query['token'];
-        if (userInfo.username === undefined || userInfo.reponame === undefined || userInfo.username === '' || userInfo.reponame === '') {
+
+        query.username = undefined;
+        query.reponame = undefined;
+        query.token = undefined;
+        queryParam = _.omitBy(query, _.isEmpty || _.isUndefined);
+
+        var today = new Date();
+
+        if (!userInfo.username || !userInfo.reponame) {
             res.render('reportView', {
                 errorMessage: 'git username and reponame is required'
             });
@@ -70,17 +64,13 @@ var reportController = function (reportService, querystring) {
                     });
                     return;
                 }
-                onRepoDataRetrivedSuccessfully(repoDatas, res)
+                onRepoDataRetrivedSuccessfully(repoDatas, res);
             });
         }
-    }
-
-
+    };
     return {
         getReport: getReport
     };
-
-
 };
 
 module.exports = reportController;

@@ -2,15 +2,13 @@ var request = require('request');
 var _ = require('lodash');
 var headers = {
     'user-agent': 'node.js'
-}
-
-
+};
 
 var reportService = function (querystring) {
     var getUserList = function (repoDatas, cb) {
         var userList = [];
         repoDatas.forEach(function (r) {
-            if (!_.includes(userList, r.committedBy) && r.committedBy.toLowerCase() !== "github") {
+            if (!_.includes(userList, r.committedBy) && r.committedBy.toLowerCase() !== 'github') {
                 userList.push(r.committedBy);
             }
         }, this);
@@ -18,10 +16,9 @@ var reportService = function (querystring) {
     };
 
     var getGitCommits = function (queryParamStr, userInfo, cb) {
-        if (userInfo.token !== undefined && userInfo.token.trim() !== "") {
+        if (userInfo.token !== undefined && userInfo.token.trim() !== '') {
             headers['Authorization'] = userInfo.token;
         }
-
         request.get({
             uri: 'https://api.github.com/repos/' + userInfo.username + '/' + userInfo.reponame + '/commits?' + queryParamStr,
             method: 'GET',
@@ -36,15 +33,13 @@ var reportService = function (querystring) {
                         commitMessage: c.commit.message,
                         committedBy: c.commit.committer.name,
                         committedDate: c.commit.committer.date,
-                    }
+                    };
                     repoDatas.push(repoData);
                 }, this);
                 cb(null, repoDatas);
             } else {
-                cb(JSON.stringify(response.body), repoDatas);
+                cb(JSON.stringify(response.body), []);
             }
-
-
         });
     };
 
@@ -59,40 +54,40 @@ var reportService = function (querystring) {
             }
             case '-t': {
                 var timeDetail = data.trim().split('-t')[1];
-                return timeDetail === undefined ? "0 mins" : timeDetail.split('-')[0].trim();
+                return timeDetail === undefined ? '0 mins' : timeDetail.split('-')[0].trim();
             }
             case '-s': {
                 var statusDetail = data.trim().split('-s')[1];
-                return statusDetail === undefined ? "In Progress" : statusDetail.split('-')[0].trim();
+                return statusDetail === undefined ? 'In Progress' : statusDetail.split('-')[0].trim();
             }
             default:
                 return data;
         }
-    }
+    };
 
     var getProjectStatus = function (status) {
         status = status.toLowerCase();
-        if (status === "wip" || status === "progress" || status === "in progress") {
-            return "In Progress";
-        } else if (status === "completed" || status === "complete") {
-            return "Completed";
+        if (status === 'wip' || status === 'progress' || status === 'in progress') {
+            return 'In Progress';
+        } else if (status === 'completed' || status === 'complete') {
+            return 'Completed';
         } else {
-            return "In Progress";
+            return 'In Progress';
         }
-    }
+    };
+
     var getTimeInMins = function (timeSpent) {
         var timeInMin = '';
         if (!_.isNumber(parseFloat(timeSpent))) {
             timeInMin = '0 mins';
         }
-        if ((timeSpent.indexOf('h') !== -1 || timeSpent.indexOf('H') !== -1)
-            && (timeSpent.indexOf('m') !== -1 || timeSpent.indexOf('M') !== -1)) {
-            var hourSplit = timeSpent.split('h')[0].trim();
-            var minSplit = timeSpent.split('m')[0].trim().split(' ');
+        if (timeSpent.toLowerCase().indexOf('h') !== -1 && timeSpent.toLowerCase().indexOf('m') !== -1) {
+            var hourSplit = timeSpent.toLowerCase().split('h')[0].trim();
+            var minSplit = timeSpent.toLowerCase().split('m')[0].trim().split(' ');
             timeInMin = parseFloat(hourSplit) * 60 + parseFloat(minSplit[minSplit.length - 1]);
-        } else if (timeSpent.indexOf('h') !== -1 || timeSpent.indexOf('H') !== -1) {
+        } else if (timeSpent.toLowerCase().indexOf('h') !== -1) {
             timeInMin = parseFloat(timeSpent) * 60;
-        } else if (timeSpent.indexOf('m') !== -1 || timeSpent.indexOf('M') !== -1) {
+        } else if (timeSpent.toLowerCase().indexOf('m') !== -1) {
             timeInMin = parseFloat(timeSpent);
         } else if (timeSpent < 8) {
             timeInMin = parseFloat(timeSpent) * 60;
@@ -100,7 +95,7 @@ var reportService = function (querystring) {
             timeInMin = parseFloat(timeSpent);
         }
         return timeInMin;
-    }
+    };
 
     var getGitCommitsReport = function (repoDatas, cb) {
         var reportDatas = [];
@@ -113,7 +108,7 @@ var reportService = function (querystring) {
                 taskTitle: getCleanSplittedData(commitMessage, '-m'),
                 taskTimeSpent: getTimeInMins(getCleanSplittedData(commitMessage, '-t')),
                 taskStatus: getProjectStatus(getCleanSplittedData(commitMessage, '-s'))
-            }
+            };
             reportDatas.push(reportData);
         }, this);
 
@@ -125,8 +120,6 @@ var reportService = function (querystring) {
                     reportDatas[i].taskTitle = reportDatas[j].taskTitle;
                     reportDatas[i].taskTimeSpent = reportDatas[i].taskTimeSpent + reportDatas[j].taskTimeSpent;
                     reportDatas[j].isUnique = false;
-                } else {
-
                 }
             }
             mergedCommitsDetail.push(reportDatas[i]);
@@ -143,7 +136,7 @@ var reportService = function (querystring) {
         //REMOVE MERGED COMMITS
         var noAutoGeneratedCommitsReport = [];
         _.each(finalCommitsReport, function (a) {
-            if (a.committedBy !== "GitHub") {
+            if (a.committedBy !== 'GitHub') {
                 noAutoGeneratedCommitsReport.push(a);
             }
         });
