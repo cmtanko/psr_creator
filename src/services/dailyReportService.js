@@ -1,5 +1,7 @@
 var request = require('request');
 var _ = require('lodash');
+var moment = require('moment');
+
 var headers = {
     'user-agent': 'node.js'
 };
@@ -15,12 +17,15 @@ var dailyReportService = function (querystring) {
         cb(null, userList);
     };
 
-    var getGitCommits = function (queryParamStr, userInfo, cb) {
+    var getGitCommits = function (date, userInfo, cb) {
+        var queryDate = moment.utc(date).format("YYYY-MM-DD");
+        
+        
         if (userInfo.token !== undefined && userInfo.token.trim() !== '') {
             headers['Authorization'] = userInfo.token;
         }
         request.get({
-            uri: 'https://api.github.com/repos/' + userInfo.username + '/' + userInfo.reponame + '/commits?' + queryParamStr,
+            uri: 'https://api.github.com/repos/' + userInfo.username + '/' + userInfo.reponame + '/events?',
             method: 'GET',
             headers: headers
         }, function (err, response, body) {
@@ -29,12 +34,21 @@ var dailyReportService = function (querystring) {
                 var repoDatas = [];
 
                 results.forEach(function (c) {
-                    var repoData = {
-                        commitMessage: c.commit.message,
-                        committedBy: c.commit.committer.name,
-                        committedDate: c.commit.committer.date,
-                    };
+                    var createdDate = moment.utc(c.created_at).format("YYYY-MM-DD");
+                    console.log(queryDate + ' VS ' + createdDate + '=' + moment(queryDate).isSame(createdDate));
+                    var repoData = {};
+                    if(moment(queryDate).isSame(createdDate) && c.type === 'PushEvent'){
+                      _.each(c.payload.commits, function(commit){
+                          repoData = {
+                        commitMessage: commit.message,
+                        committedBy: c.type,
+                        committedDate: c.created_at,
+                        };
+                      }, this);
+                      
                     repoDatas.push(repoData);
+                    }
+                    
                 }, this);
                 cb(null, repoDatas);
             } else {

@@ -57,7 +57,7 @@ var dailyReportController = function (dailyReportService, querystring) {
             return;
         } else {
             var queryParamStr = querystring.stringify(queryParam);
-            dailyReportService.getGitCommits(queryParamStr, userInfo, function (err, repoDatas) {
+            dailyReportService.getGitCommits(query['date'], userInfo, function (err, repoDatas) {
                 if (err) {
                     res.render('', {
                         errorMessage: err
