@@ -136,13 +136,11 @@
                         <div class="col-md-12">
                             {{#each commitsByUsers}}
                             <h2>{{this.user}}</h2>
-                            <table style="width:100%;">
+                            <table style="width:100%;border: none;">
                                 {{#each this.commits}}
                                 <tr class="report_row">
                                     <th style="width:5%; text-align: center;">{{this.id}}</th>
-                                    <th style="width:0px"></th>
-                                    <th style="width:75%">{{this.taskTitle}}</th>
-                                    <th style="width:10%; text-align: center;">{{this.taskStatus}}</th>
+                                    <th style="width:75%">{{this.taskId}} | {{this.taskTitle}} ( {{this.taskStatus}} )</th>
                                     <th style="width:10%; text-align: center;">{{this.taskTimeSpent}} mins</th>
                                 </tr>
                                 {{/each}}

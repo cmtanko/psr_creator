@@ -8,6 +8,7 @@ var dailyReportController = function (dailyReportService, querystring) {
         dailyReportService.getGitCommitsReport(repoDatas, function (err, reportDatas) {
             dailyReportService.getUserList(repoDatas, function (err, userDatas) {
                 var commitsByUsers = [];
+                console.log(JSON.stringify(repoDatas));
                 userDatas.forEach(function (a) {
                     var newObject = {
                         'user': a,
