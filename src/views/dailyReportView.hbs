@@ -51,10 +51,7 @@
                     <li>
                         <a href="/dailyreport">Daily Report</a>
                     </li>
-                    {{!--<li>
-                        <a href="">Login</a>
-                    </li>--}}
-                </ul>
+                   </ul>
                 
             </nav>
         </div>
@@ -64,7 +61,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-7">
-                    <h1>PSR Generator
+                    <h1>Daily Report
                         <p class="lead"></p>
                     </h1>
                 </div>
@@ -89,18 +86,14 @@
                 <div class="panel">
                     <div class="panel-body">
                         <div>
-                            <form class="well" action="/report" name="generate-report" mehtod="get">
+                            <form class="well" action="/dailyReport" name="generate-report" method="get">
                                 <p class="bg-danger">{{errorMessage}}</p>
 
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>From:</label>
-                                            <input type="date" name="since" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label>Till:</label>
-                                            <input type="date" name="until" class="form-control">
+                                            <label>Date:</label>
+                                            <input type="date" name="date" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -114,13 +107,7 @@
                                             <label>Git Reponame:*</label>
                                             <input type="text" class="form-control" name="reponame" value="{{userInfo.reponame}}" placeholder="testRepo">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label>Git Branch:</label>
-                                            <input type="text" class="form-control" name="sha" value="{{queryParam.branch}}">
-                                        </div>
                                     </div>
-
-
                                 </div>
                                 <div class="form-group">
                                     <label>Git Token:</label>

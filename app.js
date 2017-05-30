@@ -14,8 +14,12 @@ app.set('view engine', '.hbs');
 
 //ROUTES
 var reportRouter = require('./src/routes/reportRoutes')(querystring);
+var dailyReportRouter = require('./src/routes/dailyReportRoutes')(querystring);
+
 
 app.use('/report', reportRouter);
+app.use('/dailyreport', dailyReportRouter);
+
 app.get('/', function (req, res) {
     res.render('index.hbs');
 });
