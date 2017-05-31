@@ -51,11 +51,8 @@
                     <li>
                         <a href="/dailyreport">Daily Report</a>
                     </li>
-                    {{!--<li>
-                        <a href="">Login</a>
-                    </li>--}}
                 </ul>
-                
+
             </nav>
         </div>
     </header>
@@ -64,7 +61,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-7">
-                    <h1>PSR Generator
+                    <h1>Daily Report
                         <p class="lead"></p>
                     </h1>
                 </div>
@@ -89,18 +86,14 @@
                 <div class="panel">
                     <div class="panel-body">
                         <div>
-                            <form class="well" action="/report" name="generate-report" mehtod="get">
+                            <form class="well" action="/dailyReport" name="generate-report" method="get">
                                 <p class="bg-danger">{{errorMessage}}</p>
 
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>From:</label>
-                                            <input type="date" name="since" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label>Till:</label>
-                                            <input type="date" name="until" class="form-control">
+                                            <label>Date:</label>
+                                            <input type="date" name="date" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -114,13 +107,7 @@
                                             <label>Git Reponame:*</label>
                                             <input type="text" class="form-control" name="reponame" value="{{userInfo.reponame}}" placeholder="testRepo">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label>Git Branch:</label>
-                                            <input type="text" class="form-control" name="sha" value="{{queryParam.branch}}">
-                                        </div>
                                     </div>
-
-
                                 </div>
                                 <div class="form-group">
                                     <label>Git Token:</label>
@@ -130,6 +117,27 @@
                                 <button type="submit" class="btn btn-primary">Generate</button>
                             </form>
                         </div>
+
+
+                        <h1>Report</h1>
+
+                        <div class="col-md-12">
+                            {{#each commitsByUsers}}
+                            <h2>{{this.user}}</h2>
+                            <ul>
+                                {{#each this.commits}}
+                                <li>
+                                    {{this.taskId}} | {{this.taskTitle}} ( {{this.taskStatus}} )
+                                </li>
+                                {{/each}}
+                            </ul>
+                            <ul>
+                                <li>( {{this.totalTime}} hrs)</li>
+                            </ul>
+
+                            <br> {{/each}}
+                        </div>
+
                         <h1>Commits</h1>
                         <ul class="well">
                             {{#each repoDatas}}
@@ -143,26 +151,6 @@
                             </li>
                             {{/each}}
                         </ul>
-
-                        <h1>Report</h1>
-
-                        <div class="col-md-12">
-                            {{#each commitsByUsers}}
-                            <h2>{{this.user}}</h2>
-                            <table style="width:100%;">
-                                {{#each this.commits}}
-                                <tr class="report_row">
-                                    <th style="width:5%; text-align: center;">{{this.id}}</th>
-                                    <th style="width:0px"></th>
-                                    <th style="width:75%">{{this.taskTitle}}</th>
-                                    <th style="width:10%; text-align: center;">{{this.taskStatus}}</th>
-                                    <th style="width:10%; text-align: center;">{{this.taskTimeSpent}} mins</th>
-                                </tr>
-                                {{/each}}
-                            </table>
-                            <br> {{/each}}
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -170,4 +158,5 @@
         </div>
     </div>
 </body>
+
 </html>
