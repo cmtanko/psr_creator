@@ -10,10 +10,10 @@ var dailyReportService = function (querystring) {
     var getUserList = function (repoDatas, cb) {
         var userList = [];
         repoDatas.forEach(function (r) {
-            if(_.get(r,'committedBy')){
-if (!_.includes(userList, r.committedBy) && r.committedBy.toLowerCase() !== 'github') {
-                userList.push(r.committedBy);
-            }
+            if (_.get(r, 'committedBy')) {
+                if (!_.includes(userList, r.committedBy) && r.committedBy.toLowerCase() !== 'github') {
+                    userList.push(r.committedBy);
+                }
             }
         }, this);
         cb(null, userList);
@@ -21,8 +21,8 @@ if (!_.includes(userList, r.committedBy) && r.committedBy.toLowerCase() !== 'git
 
     var getGitCommits = function (date, userInfo, cb) {
         var queryDate = moment.utc(date).format("YYYY-MM-DD");
-        
-        
+
+
         if (userInfo.token !== undefined && userInfo.token.trim() !== '') {
             headers['Authorization'] = userInfo.token;
         }
@@ -39,21 +39,21 @@ if (!_.includes(userList, r.committedBy) && r.committedBy.toLowerCase() !== 'git
                     var createdDate = moment.utc(c.created_at).format("YYYY-MM-DD");
                     console.log(queryDate + ' VS ' + createdDate + '=' + moment(queryDate).isSame(createdDate));
                     var repoData = {};
-                    if(moment(queryDate).isSame(createdDate) && c.type === 'PushEvent'){
-                      _.each(c.payload.commits, function(commit){
-                          if(_.get(commit,'message').toLowerCase().indexOf('merged') === -1){
-                            repoData = {
-                        commitMessage: commit.message,
-                        committedBy: commit.author.email,
-                        committedDate: c.created_at,
-                        };
-                          }
-                        
-                      }, this);
-                      
-                    repoDatas.push(repoData);
+                    if (moment(queryDate).isSame(createdDate) && c.type === 'PushEvent') {
+                        _.each(c.payload.commits, function (commit) {
+                            if (_.get(commit, 'message').toLowerCase().indexOf('merged') === -1) {
+                                repoData = {
+                                    commitMessage: commit.message,
+                                    committedBy: commit.author.email,
+                                    committedDate: c.created_at,
+                                };
+                            }
+
+                        }, this);
+
+                        repoDatas.push(repoData);
                     }
-                    
+
                 }, this);
                 cb(null, repoDatas);
             } else {
@@ -128,8 +128,12 @@ if (!_.includes(userList, r.committedBy) && r.committedBy.toLowerCase() !== 'git
                 taskTimeSpent: getTimeInMins(getCleanSplittedData(commitMessage, '-t')),
                 taskStatus: getProjectStatus(getCleanSplittedData(commitMessage, '-s'))
             };
+            //console.log(reportData.totalTimeSpent + ' ' + reportData.taskTimeSpent);
+            //reportData.totalTimeSpent = parseInt( reportData.totalTimeSpent + reportData.taskTimeSpent);
             reportDatas.push(reportData);
         }, this);
+
+        
 
         // //LETS MERGE COMMITS FOR SAME TASK, TIME SPENT IS ADDED, COMMIT MESSESS WOULD BE THE FIRST COMMIT
         // var mergedCommitsDetail = [];

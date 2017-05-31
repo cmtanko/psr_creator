@@ -15,10 +15,14 @@ var dailyReportController = function (dailyReportService, querystring) {
                         'commits': []
                     };
                     var counter = 1;
+                    let totalTimeSpent = 0;
+
                     reportDatas.forEach(function (r) {
+                        totalTimeSpent += (r.taskTimeSpent / 60);
                         if (a === r.committedBy) {
                             r.id = counter++;
                             newObject['commits'].push(r);
+                            newObject['totalTime'] =  totalTimeSpent;
                         }
                     }, this);
                     commitsByUsers.push(newObject);
