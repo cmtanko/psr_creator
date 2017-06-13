@@ -22,7 +22,7 @@ var dailyReportController = function (dailyReportService, querystring) {
                         if (a === r.committedBy) {
                             r.id = counter++;
                             newObject['commits'].push(r);
-                            newObject['totalTime'] =  totalTimeSpent;
+                            newObject['totalTime'] =  Math.round(totalTimeSpent);
                         }
                     }, this);
                     commitsByUsers.push(newObject);
