@@ -37,7 +37,6 @@ var dailyReportService = function (querystring) {
 
                 results.forEach(function (c) {
                     var createdDate = moment.utc(c.created_at).format("YYYY-MM-DD");
-                    console.log(queryDate + ' VS ' + createdDate + '=' + moment(queryDate).isSame(createdDate));
                     var repoData = {};
                     if (moment(queryDate).isSame(createdDate) && c.type === 'PushEvent') {
                         _.each(c.payload.commits, function (commit) {
@@ -54,8 +53,28 @@ var dailyReportService = function (querystring) {
                         repoDatas.push(repoData);
                     }
 
+                    if (moment(queryDate).isSame(createdDate) && c.type === 'PullRequestEvent') {
+                        request.get({
+                            uri: _.get(c.payload.pull_request, 'commits_url'),
+                            method: 'GET',
+                            headers: headers
+                        }, function (err, response, body) {
+                            var result = JSON.parse(body);
+                            repoData = {
+                                commitMessage: result[0].commit.message,
+                                committedBy: result[0].commit.author.email,
+                                committedDate: result[0].commit.author.date,
+                            };
+                            repoDatas.push(repoData);
+                        });
+                    }
+
                 }, this);
-                cb(null, repoDatas);
+
+                setTimeout(function () {
+                    console.log('-==---' + JSON.stringify(repoDatas));
+                    cb(null, repoDatas);
+                }, 8000)
             } else {
                 cb(JSON.stringify(response.body), []);
             }
@@ -133,7 +152,7 @@ var dailyReportService = function (querystring) {
             reportDatas.push(reportData);
         }, this);
 
-        
+
 
         // //LETS MERGE COMMITS FOR SAME TASK, TIME SPENT IS ADDED, COMMIT MESSESS WOULD BE THE FIRST COMMIT
         // var mergedCommitsDetail = [];
