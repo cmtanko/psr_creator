@@ -23,7 +23,7 @@ var reportController = function (reportService, querystring) {
                     commitsByUsers.push(newObject);
                 }, this);
 
-                console.log(commitsByUsers);
+                console.log(JSON.stringify(commitsByUsers));
                 res.render('reportView', {
                     reportPage: 'Hello from report Page',
                     repoDatas: repoDatas,
