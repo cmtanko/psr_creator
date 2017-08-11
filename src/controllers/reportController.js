@@ -35,38 +35,48 @@ var reportController = function (reportService, querystring) {
         });
     };
 
+    var onReportSuccess = function (results, query, res) {
+        console.log('++++++++++++====' + JSON.parse(results));
+
+        res.render('reportView', {
+            reportPage: 'Hello from report Page',
+            repoDatas: 'repoDatas',
+            userInfo: 'userInfo',
+            queryParam: 'queryParam',
+            commitsByUsers: 'commitsByUsers',
+            issues:_.sortBy(JSON.parse(results),['task_status','task_id'])
+        });
+    }
+
     var getReport = function (req, res) {
         var query = req.query;
+
 
         userInfo = {};
         userInfo['username'] = query['username'];
         userInfo['reponame'] = query['reponame'];
-        userInfo['token'] = query['token'] === undefined || query['token'] === '' ? '' : 'token ' + query['token'];
+        userInfo['token'] = query['token'] === undefined || query['token'] === '' ? '' : 'Basic ' + query['token'];
 
         query.username = undefined;
         query.reponame = undefined;
         query.token = undefined;
         queryParam = _.omitBy(query, _.isEmpty || _.isUndefined);
 
-        var today = new Date();
-
-        if (!userInfo.username || !userInfo.reponame) {
-            res.render('reportView', {
-                errorMessage: 'git username and reponame is required'
-            });
-            return;
-        } else {
-            var queryParamStr = querystring.stringify(queryParam);
-            reportService.getGitCommits(queryParamStr, userInfo, function (err, repoDatas) {
-                if (err) {
-                    res.render('reportView', {
-                        errorMessage: err
-                    });
-                    return;
-                }
-                onRepoDataRetrivedSuccessfully(repoDatas, res);
-            });
-        }
+        let queryParamStr = {
+            from: new Date(query.since),
+            to: new Date(query.until),
+            today: new Date()
+        };
+        reportService.getJiraIssues(queryParamStr, userInfo, function (err, results) {
+            if (err) {
+                res.render('reportView', {
+                    errorMessage: err
+                });
+                return;
+            }
+            // console.log('<___________________>' + results);
+            onReportSuccess(results, queryParamStr, res);
+        });
     };
     return {
         getReport: getReport
