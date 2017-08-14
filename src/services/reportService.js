@@ -21,20 +21,21 @@ var reportService = function (querystring) {
             method: 'GET',
             headers: headers
         }, function (err, response, body) {
-
             if (response.statusCode === 200) {
                 var results = JSON.parse(body).issues;
                 var issues = [];
                 _.each(results, function (result) {
-                    issues.push({
-                        task_id: result.key,
-                        task_type: _.get(result, 'fields.issuetype.name'),
-                        task_description: _.get(result, 'fields.summary'),
-                        task_creation_date: _.get(result, 'fields.created'),
-                        task_updated_date: _.get(result, 'fields.updated'),
-                        task_assignee: _.get(result, 'fields.assignee.displayName'),
-                        task_status: getStatus(_.get(result, 'fields.status.statusCategory.id'))
-                    });
+                    if (_.get(result, 'fields.status.name') !== 'Done') {
+                        issues.push({
+                            task_id: result.key,
+                            task_type: _.get(result, 'fields.issuetype.name'),
+                            task_description: _.get(result, 'fields.summary'),
+                            task_creation_date: _.get(result, 'fields.created'),
+                            task_updated_date: _.get(result, 'fields.updated'),
+                            task_assignee: _.get(result, 'fields.assignee.displayName'),
+                            task_status: getStatus(_.get(result, 'fields.status.name'))
+                        });
+                    }
                 }, this);
                 cb(null, JSON.stringify(issues));
             }
@@ -42,9 +43,10 @@ var reportService = function (querystring) {
     }
 
     var getStatus = function (statusCode) {
-        if(statusCode === 2) return 'To Do'
-        if(statusCode === 4) return 'Completed'
-        return 'In Progress';
+        if (statusCode === 'In Progress') return 'In Progress'
+        else if (statusCode === 'Ready For Testing') return 'Completed'
+        else if (statusCode === 'Selected for Development') return 'To Do'
+        return statusCode;
     }
     var getGitCommits = function (queryParamStr, userInfo, cb) {
         if (userInfo.token !== undefined && userInfo.token.trim() !== '') {

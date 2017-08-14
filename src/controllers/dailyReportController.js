@@ -8,7 +8,6 @@ var dailyReportController = function (dailyReportService, querystring) {
         dailyReportService.getGitCommitsReport(repoDatas, function (err, reportDatas) {
             dailyReportService.getUserList(repoDatas, function (err, userDatas) {
                 var commitsByUsers = [];
-                console.log(JSON.stringify(repoDatas));
                 userDatas.forEach(function (a) {
                     var newObject = {
                         'user': a,
@@ -28,7 +27,6 @@ var dailyReportController = function (dailyReportService, querystring) {
                     commitsByUsers.push(newObject);
                 }, this);
 
-                console.log(commitsByUsers);
                 res.render('dailyReportView', {
                     reportPage: 'Hello from report Page',
                     repoDatas: repoDatas,

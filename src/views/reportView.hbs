@@ -148,19 +148,31 @@
                         <h1>Report</h1>
 
                         <div class="col-md-12">
+                            Last week
                             <table style="width:100%;    font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:black">
-                           
-                            {{#each issues}}
+
+                                {{#each lastWeekIssues}}
                                 <tr class="report_row">
-                                    <th style="width:5%; text-align: center;     font-weight: normal;"></th>
+                                    <th style="width:5%; text-align: center;     font-weight: normal;">{{@index}}</th>
                                     <th style="width:0px"></th>
                                     <th style="width:75%;    font-weight: normal;">{{this.task_id}} | {{this.task_description}}</th>
                                     <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_status}}</th>
-                                    <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_assignee}}</th>
+                                    <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_updated_date}}</th>
                                 </tr>
-                            {{/each}}
+                                {{/each}}
                             </table>
-                            
+                            <br> This week
+                            <table style="width:100%;    font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:black">
+                                {{#each thisWeekIssues}}
+                                <tr class="report_row">
+                                    <th style="width:5%; text-align: center;     font-weight: normal;">{{@index}}</th>
+                                    <th style="width:0px"></th>
+                                    <th style="width:75%;    font-weight: normal;">{{this.task_id}} | {{this.task_description}}</th>
+                                    <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_status}}</th>
+                                    <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_updated_date}}</th>
+                                </tr>
+                                {{/each}}
+                            </table>
                         </div>
 
                     </div>

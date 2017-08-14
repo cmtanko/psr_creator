@@ -72,7 +72,6 @@ var dailyReportService = function (querystring) {
                 }, this);
 
                 setTimeout(function () {
-                    console.log('-==---' + JSON.stringify(repoDatas));
                     cb(null, repoDatas);
                 }, 8000)
             } else {
@@ -147,7 +146,6 @@ var dailyReportService = function (querystring) {
                 taskTimeSpent: getTimeInMins(getCleanSplittedData(commitMessage, '-t')),
                 taskStatus: getProjectStatus(getCleanSplittedData(commitMessage, '-s'))
             };
-            //console.log(reportData.totalTimeSpent + ' ' + reportData.taskTimeSpent);
             //reportData.totalTimeSpent = parseInt( reportData.totalTimeSpent + reportData.taskTimeSpent);
             reportDatas.push(reportData);
         }, this);

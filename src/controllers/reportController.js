@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var moment = require('moment');
 
 var reportController = function (reportService, querystring) {
     var userInfo = {};
@@ -23,7 +24,6 @@ var reportController = function (reportService, querystring) {
                     commitsByUsers.push(newObject);
                 }, this);
 
-                console.log(JSON.stringify(commitsByUsers));
                 res.render('reportView', {
                     reportPage: 'Hello from report Page',
                     repoDatas: repoDatas,
@@ -36,7 +36,23 @@ var reportController = function (reportService, querystring) {
     };
 
     var onReportSuccess = function (results, query, res) {
-        console.log('++++++++++++====' + JSON.parse(results));
+
+        var totalIssuesLastWeek = [];
+        var totalIssuesThisWeek = [];
+        var newIssues = [];
+        _.each(JSON.parse(results), function (result) {
+            if (moment(query.from) <= moment(result.task_updated_date) && moment(query.to) >= moment(result.task_updated_date)) {
+                if (moment(result.task_updated_date) <= moment(query.to) && moment(result.task_updated_date) >= moment(query.to).subtract(5, "d")) {
+                    totalIssuesThisWeek.push(result);
+                }else{
+                    totalIssuesLastWeek.push(result)
+                }
+            } else {
+                if (result.task_status === 'To Do') {
+                    totalIssuesThisWeek.push(result);
+                }
+            }
+        }, this);
 
         res.render('reportView', {
             reportPage: 'Hello from report Page',
@@ -44,7 +60,8 @@ var reportController = function (reportService, querystring) {
             userInfo: 'userInfo',
             queryParam: 'queryParam',
             commitsByUsers: 'commitsByUsers',
-            issues:_.sortBy(JSON.parse(results),['task_status','task_id'])
+            lastWeekIssues: _.sortBy(totalIssuesLastWeek, ['task_status', 'task_id']),
+            thisWeekIssues: _.sortBy(totalIssuesThisWeek, ['task_status', 'task_id'])
         });
     }
 
@@ -67,14 +84,21 @@ var reportController = function (reportService, querystring) {
             to: new Date(query.until),
             today: new Date()
         };
+
+        //ASSIGNEE IS IMPORTANT
+        if (!userInfo.username) {
+            res.render('reportView', {});
+            return;
+        }
+
         reportService.getJiraIssues(queryParamStr, userInfo, function (err, results) {
-            if (err) {
+
+            if (err || results.length === 0) {
                 res.render('reportView', {
                     errorMessage: err
                 });
                 return;
             }
-            // console.log('<___________________>' + results);
             onReportSuccess(results, queryParamStr, res);
         });
     };
