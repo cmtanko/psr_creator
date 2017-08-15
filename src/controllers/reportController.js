@@ -53,7 +53,7 @@ var reportController = function (reportService, querystring) {
                 }
             }
         }, this);
-
+        console.log(JSON.stringify(query));
         res.render('reportView', {
             reportPage: 'Hello from report Page',
             repoDatas: 'repoDatas',
@@ -63,6 +63,8 @@ var reportController = function (reportService, querystring) {
             startDate: moment(query.from).format('MM/DD/YYYY'),
             endDate: moment(query.to).format('MM/DD/YYYY'),
             currentDate: moment(query.today).format('MM/DD/YYYY'),
+            projectName: query.projectName,
+            projectStatus:query.projectStatus,
             lastWeekIssues: _.sortBy(totalIssuesLastWeek, ['task_status', 'task_id']),
             thisWeekIssues: _.sortBy(totalIssuesThisWeek, ['task_status', 'task_id'])
         });
@@ -70,11 +72,12 @@ var reportController = function (reportService, querystring) {
 
     var getReport = function (req, res) {
         var query = req.query;
-
-
+        console.log(query);
         userInfo = {};
         userInfo['username'] = query['username'];
         userInfo['reponame'] = query['reponame'];
+        userInfo['projectStatus']  = query['projectStatus'];
+        userInfo['sha']  = query['sha'];
         userInfo['token'] = query['token'] === undefined || query['token'] === '' ? '' : 'Basic ' + query['token'];
 
         query.username = undefined;
@@ -85,12 +88,18 @@ var reportController = function (reportService, querystring) {
         let queryParamStr = {
             from: new Date(query.since),
             to: new Date(query.until),
-            today: new Date()
+            today: new Date(),
+            projectName: query.sha,
+            projectStatus: query.projectStatus
         };
 
         //ASSIGNEE IS IMPORTANT
         if (!userInfo.username) {
-            res.render('reportView', {});
+            res.render('reportView', {
+                startDate: moment(queryParamStr.today).subtract(14,'d').format('YYYY-MM-DD'),
+                endDate: moment(queryParamStr.today).add(1,'d').format('YYYY-MM-DD'),
+                currentDate: moment(queryParamStr.today).format('YYYY-MM-DD'),
+            });
             return;
         }
 

@@ -17,7 +17,7 @@ var reportService = function (querystring) {
     var getJiraIssues = function (queryParamStr, userInfo, cb) {
         headers.Authorization = userInfo.token;
         request.get({
-            uri: 'https://lftechnology.atlassian.net/rest/api/latest/search?jql=assignee=' + userInfo.username + '&maxResults=10',
+            uri: 'https://lftechnology.atlassian.net/rest/api/latest/search?jql=assignee=' + userInfo.username + '&maxResults=100',
             method: 'GET',
             headers: headers
         }, function (err, response, body) {
