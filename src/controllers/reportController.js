@@ -44,7 +44,7 @@ var reportController = function (reportService, querystring) {
             if (moment(query.from) <= moment(result.task_updated_date) && moment(query.to) >= moment(result.task_updated_date)) {
                 if (moment(result.task_updated_date) <= moment(query.to) && moment(result.task_updated_date) >= moment(query.to).subtract(5, "d")) {
                     totalIssuesThisWeek.push(result);
-                }else{
+                } else {
                     totalIssuesLastWeek.push(result)
                 }
             } else {
@@ -57,9 +57,12 @@ var reportController = function (reportService, querystring) {
         res.render('reportView', {
             reportPage: 'Hello from report Page',
             repoDatas: 'repoDatas',
-            userInfo: 'userInfo',
+            userInfo: query,
             queryParam: 'queryParam',
             commitsByUsers: 'commitsByUsers',
+            startDate: moment(query.from).format('MM/DD/YYYY'),
+            endDate: moment(query.to).format('MM/DD/YYYY'),
+            currentDate: moment(query.today).format('MM/DD/YYYY'),
             lastWeekIssues: _.sortBy(totalIssuesLastWeek, ['task_status', 'task_id']),
             thisWeekIssues: _.sortBy(totalIssuesThisWeek, ['task_status', 'task_id'])
         });

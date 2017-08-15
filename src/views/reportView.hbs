@@ -96,11 +96,11 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>From:</label>
+                                            <label>Week From:</label>
                                             <input type="date" name="since" class="form-control">
                                         </div>
                                         <div class="col-md-4">
-                                            <label>Till:</label>
+                                            <label>Week To:</label>
                                             <input type="date" name="until" class="form-control">
                                         </div>
                                     </div>
@@ -108,73 +108,120 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label>Git Username:*</label>
+                                            <label>Jira username:*</label>
                                             <input type="text" class="form-control" name="username" value="{{userInfo.username}}" placeholder="cmtanko">
                                         </div>
                                         <div class="col-md-4">
-                                            <label>Git Reponame:*</label>
-                                            <input type="text" class="form-control" name="reponame" value="{{userInfo.reponame}}" placeholder="testRepo">
+                                            <label>Project Status</label>
+                                            <input type="text" class="form-control" name="reponame" value="{{userInfo.reponame}}" placeholder="On Track">
                                         </div>
                                         <div class="col-md-4">
-                                            <label>Git Branch:</label>
-                                            <input type="text" class="form-control" name="sha" value="{{queryParam.branch}}">
+                                            <label>Weekly PSR for</label>
+                                            <input type="text" class="form-control" name="sha" value="{{queryParam.branch}}" placeholder="ACT Milestone 2">
                                         </div>
                                     </div>
 
 
                                 </div>
                                 <div class="form-group">
-                                    <label>Git Token:</label>
-                                    <input type="text" class="form-control" name="token" value="{{userInfo.token}}">(for
-                                    private git repo only*)
+                                    <label>JIRA Token:</label>
+                                    <input type="text" class="form-control" name="token" value="{{userInfo.token}}">(64bit encoded token)
                                 </div>
                                 <button type="submit" class="btn btn-primary">Generate</button>
                             </form>
                         </div>
-                        <h1>Commits</h1>
-                        <ul class="well">
-                            {{#each repoDatas}}
-                            <li>
-                                <span>
-                                    {{this.committedDate}} |
-                                    {{this.committedBy}} | 
-                                    {{this.commitMessage}} 
-                                 </span>
-                                <br>
-                            </li>
-                            {{/each}}
-                        </ul>
-
                         <h1>Report</h1>
+                        <div class="ritz grid-container" dir="ltr">
+                            <table class="waffle" cellspacing="0" cellpadding="0">
+                                <tbody>
 
-                        <div class="col-md-12">
-                            Last week
-                            <table style="width:100%;    font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:black">
+                                    <tr style='height:20px;'>
+                                        <td class="s0" colspan="2">Weekly PSR for</td>
+                                        <td class="s1">ACT Milestone 2</td>
+                                        <td class="s0">As Of</td>
+                                        <td class="s2">{{currentDate}}</td>
+                                    </tr>
+                                    <tr style='height:20px;'>
+                                        <td class="s0" colspan="2">Week From</td>
+                                        <td class="s3">{{startDate}}</td>
+                                        <td class="s0">Week To</td>
+                                        <td class="s2">{{endDate}}</td>
+                                    </tr>
+                                    <tr style='height:20px;'>
 
-                                {{#each lastWeekIssues}}
-                                <tr class="report_row">
-                                    <th style="width:5%; text-align: center;     font-weight: normal;">{{@index}}</th>
-                                    <th style="width:0px"></th>
-                                    <th style="width:75%;    font-weight: normal;">{{this.task_id}} | {{this.task_description}}</th>
-                                    <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_status}}</th>
-                                    <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_updated_date}}</th>
-                                </tr>
-                                {{/each}}
-                            </table>
-                            <br> This week
-                            <table style="width:100%;    font-weight: normal; font-family: Arial, Helvetica, sans-serif; font-size:13px; color:black">
-                                {{#each thisWeekIssues}}
-                                <tr class="report_row">
-                                    <th style="width:5%; text-align: center;     font-weight: normal;">{{@index}}</th>
-                                    <th style="width:0px"></th>
-                                    <th style="width:75%;    font-weight: normal;">{{this.task_id}} | {{this.task_description}}</th>
-                                    <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_status}}</th>
-                                    <th style="width:10%; text-align: center;    font-weight: normal;">{{this.task_updated_date}}</th>
-                                </tr>
-                                {{/each}}
+                                        <td class="s0" colspan="2">Overall Project Status</td>
+                                        <td class="s4">On Track</td>
+                                        <td class="s0">Remarks</td>
+                                        <td class="s5"></td>
+                                    </tr>
+                                    <tr style='height:20px;'>
+
+                                        <td class="s6" colspan="2"></td>
+                                        <td class="s6"></td>
+                                        <td class="s6"></td>
+                                        <td class="s6"></td>
+                                    </tr>
+                                    <tr style='height:20px;'>
+
+                                        <td class="s8">SN</td>
+                                        <td class="s8" colspan="2">Planned Tasks (Last Week)</td>
+                                        <td class="s8">Task Status</td>
+                                        <td class="s0 softmerge">
+                                            <div class="softmerge-inner" style="width: 189px; left: -1px;">Risks/Remarks</div>
+                                        </td>
+                                    </tr>
+                                    {{#each lastWeekIssues}}
+                                    <tr style='height:20px;'>
+                                        <td class="s1">{{@index}}</td>
+                                        <td class="s1" colspan="2">{{this.task_id}} | {{this.task_description}}</td>
+                                        <td class="s5">{{this.task_status}}</td>
+                                        <td class="s1"></td>
+                                    </tr>
+                                    {{/each}}
+
+                                    <tr style='height:20px;'>
+
+                                        <td class="s1"></td>
+                                        <td class="s5" colspan="2"></td>
+                                        <td class="s5"></td>
+                                        <td class="s5"></td>
+                                    </tr>
+                                    <tr style='height:20px;'>
+
+                                        <td class="s8">SN</td>
+                                        <td class="s8" colspan="2">Planned Tasks (This Week)</td>
+                                        <td class="s8">Task Status</td>
+                                        <td class="s0 softmerge">
+                                            <div class="softmerge-inner" style="width: 189px; left: -1px;">Risks/Remarks</div>
+                                        </td>
+                                    </tr>
+                                    {{#each thisWeekIssues}}
+                                    <tr style='height:20px;'>
+                                        <td class="s1">{{@index}}</td>
+                                        <td class="s1" colspan="2">{{this.task_id}} | {{this.task_description}}</td>
+                                        <td class="s5">{{this.task_status}}</td>
+                                        <td class="s1"></td>
+                                    </tr>
+                                    {{/each}}
+
+                                    <tr style='height:20px;'>
+
+                                        <td class="s1"></td>
+                                        <td class="s5" colspan="2"></td>
+                                        <td class="s5"></td>
+                                        <td class="s5"></td>
+                                    </tr>
+                                    <tr style='height:20px;'>
+
+                                        <td class="s8" colspan="5">Additional Notes</td>
+                                    </tr>
+                                    <tr style='height:20px;'>
+
+                                        <td class="s1" colspan="5"></td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
