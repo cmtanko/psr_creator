@@ -1,0 +1,126 @@
+<div class="jumbotron">
+    <div id="masthead">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <h1>Daily Report
+                        <p class="lead"></p>
+                    </h1>
+                </div>
+                <div class="col-md-5">
+
+                </div>
+            </div>
+        </div>
+        <!-- /cont -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
+        </div>
+        <!-- /cont -->
+
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div>
+                            <form class="well" action="/dailyReport" name="generate-report" method="get">
+                                <p class="bg-danger">{{errorMessage}}</p>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Date:</label>
+                                            <input type="date" name="date" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Git Username:*</label>
+                                            <input type="text" class="form-control" name="username" value="{{userInfo.username}}" placeholder="cmtanko">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Git Reponame:*</label>
+                                            <input type="text" class="form-control" name="reponame" value="{{userInfo.reponame}}" placeholder="testRepo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Git Token:</label>
+                                    <input type="text" class="form-control" name="token" value="{{userInfo.token}}">(for
+                                    private git repo only*)
+                                </div>
+                                <button type="submit" class="btn btn-primary">Generate</button>
+                            </form>
+                        </div>
+
+
+                        <h1>Report</h1>
+
+                        <div class="col-md-12">
+                            {{#each commitsByUsers}}
+                            <h2>{{this.user}}</h2>
+                            <ul>
+                                {{#each this.commits}}
+                                <li>
+                                    {{this.taskId}} | {{this.taskTitle}} ( {{this.taskStatus}} )
+                                </li>
+                                {{/each}}
+                            </ul>
+                            <ul>
+                                <li>( {{this.totalTime}} hrs)</li>
+                            </ul>
+
+                            <br> {{/each}}
+                        </div>
+
+                        <h1>Commits</h1>
+                        <ul class="well">
+                            {{#each repoDatas}}
+                            <li>
+                                <span>
+                                    {{this.committedDate}} |
+                                    {{this.committedBy}} | 
+                                    {{this.commitMessage}} 
+                                 </span>
+                                <br>
+                            </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--/col-12-->
+        </div>
+    </div>
+    <!-- <div class="container">
+        <h1>Hello, world!</h1>
+        <p>This is a simple angular webpack es6 example, compatible with lazy-loading modules.</p>
+	
+		<p>Lodash version: {{main.lodash_version}}</p>
+	
+	
+		<p>Moment version: {{main.moment_version}}</p>
+	
+    
+        <div class="row">
+            <div class="col-md-4">
+                <div>Image source: <b>Model</b></div>
+                <img ng-src="{{main.angularLogo}}" alt="Angular logo">
+            </div>
+            <div class="col-md-4">
+                <div>Image source: <b>URL</b></div>
+                <img src="../../../assets/images/yeoman.png" alt="Yeoman logo">
+            </div>
+        </div>
+    </div> -->
+</div>
