@@ -15,6 +15,7 @@ import statusModule from './pages/dailystatus/dailystatus.module';
 
 
 
+
 const App = angular.module(
   "PSR Generator", [
     // plugins
@@ -40,7 +41,6 @@ const App = angular.module(
     mainModule.name,
     reportModule.name,
     statusModule.name
-
   ]
 );
 

@@ -57,7 +57,8 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label>Jira username:*</label>
-                                            <input type="text" class="form-control" name="username" ng-model="ctrl.username" value="{{ctrl.username}}" placeholder="cmtanko" required>
+                                            <input type="text" class="form-control" name="username" ng-model="ctrl.username" value="{{ctrl.username}}" placeholder="cmtanko"
+                                                required>
                                             <p class="error-text" ng-messages="form.username.$error" role="alert" ng-show="form.$submitted || form.username.$touched">
                                                 <span class="text-danger" ng-message-exp="'required'">*Required.</span>
                                             </p>
@@ -73,8 +74,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label>JIRA Token:</label>
-                                    <input type="text" class="form-control" name="token" ng-model="ctrl.projectToken" value="{{ctrl.projectToken}}" required>(64bit
-                                    encoded token)
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" name="token" ng-model="ctrl.jiraUsername" value="{{ctrl.jiraUsername}}" placeholder="Jira Username" required>
+                                            <input type="password" class="form-control" name="token" ng-model="ctrl.jiraPassword" value="{{ctrl.jiraPassword}}" placeholder="Jira Password" required>
+                                        </div>
+                                    </div>
                                     <p class="error-text" ng-messages="form.token.$error" role="alert" ng-show="form.$submitted || form.token.$touched">
                                         <span class="text-danger" ng-message-exp="'required'">*Required.</span>
                                     </p>

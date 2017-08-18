@@ -2,11 +2,11 @@
 
 
 
-function routeConfig($urlRouterProvider) {
+function routeConfig($urlRouterProvider,$httpProvider) {
   'ngInject';
 
 
-
+  $httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
   $urlRouterProvider.otherwise('/');
 
 }

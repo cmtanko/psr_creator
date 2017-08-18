@@ -1,12 +1,15 @@
 'use strict';
 
 import route from './report.route';
+import service from './report.service';
 
 const reportPageModule = angular.module('report-module', [
   'ui.router'
 ]);
 
 reportPageModule
-    .config(route);
+  .config(route)
+  .service('reportService',service).name
+
 
 export default reportPageModule;
