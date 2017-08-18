@@ -1,4 +1,5 @@
 'use strict';
+import _ from 'lodash';
 
 class ReportService {
     constructor($resource) {
@@ -7,7 +8,7 @@ class ReportService {
     }
 
     getJiraIssues(query, successFn, failFn) {
-        let promise = this.$resource(query.projectURL + '/rest/api/latest/search?jql=assignee=' + query.assignee + '&maxResults=' + '100',
+        this.$resource(query.projectURL + '/rest/api/latest/search?jql=assignee=' + query.assignee + '&maxResults=' + '100',
             {},
             {
                 get: {
@@ -34,13 +35,14 @@ class ReportService {
             })
             .catch((data) => {
                 failFn(data);
-            })
+            });
     }
 
     getStatus(statusCode) {
-        if (statusCode === 'In Progress') return 'In Progress'
-        else if (statusCode === 'Ready For Testing') return 'Completed'
-        else if (statusCode === 'Selected for Development') return 'To Do'
+        if (statusCode === 'In Progress') { return 'In Progress'; }
+        else if (statusCode === 'Ready For Testing') { return 'Completed'; }
+        else if (statusCode === 'Selected for Development') { return 'To Do'; }
+     
         return statusCode;
     }
 }
