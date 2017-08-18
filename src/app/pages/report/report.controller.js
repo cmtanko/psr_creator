@@ -38,7 +38,7 @@ class ReportController {
       token: this.base64.encode(form.jiraUsername.$viewValue + ":" + form.jiraPassword.$viewValue),
     }
     this.projectAttrs = projectJiraAttrs;
-
+    debugger;
     this.reportService.getJiraIssues(projectJiraAttrs,
       (data) => {
         this.onReportSuccess(data, projectJiraAttrs);

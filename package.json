@@ -11,7 +11,9 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --progress --bail --open",
-    "build": "cross-env NODE_ENV=production webpack -p --colors"
+    "build": "cross-env NODE_ENV=production webpack -p --colors",
+    "precommit": "npm test",
+    "prepush": "npm test"
   },
   "dependencies": {
     "angular": "^1.6.5",
@@ -62,5 +64,8 @@
   },
   "engines": {
     "node": ">=0.12.0"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3"
   }
 }
