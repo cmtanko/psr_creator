@@ -26,7 +26,8 @@ const App = angular.module(
 	"ngSanitize", 
 	"ngMessages", 
 	"ngAria", 
-	"ngResource",
+  "ngResource",
+  "base64",
 
     // core
     coreModule.name,

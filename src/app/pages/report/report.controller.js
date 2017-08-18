@@ -4,64 +4,76 @@ import moment from 'moment';
 import _ from 'lodash';
 
 class ReportController {
-  constructor($log, reportService) {
+  constructor($log, $base64, reportService) {
     'ngInject';
     $log.debug('Hello from report controller!');
 
     //SET DEFAULT DATES
     this.initialize();
+    this.moment = moment;
+    this.base64 = $base64;
 
     this.reportService = reportService;
   }
 
   initialize() {
-    this.currentStartDate = new Date();
+    this.results = [];
+    this.currentDate = new Date();
     this.entryStartDate = new Date();
     this.entryEndDate = new Date();
-    this.entryStartDate.setDate(this.currentStartDate.getDate() - 14);
-    this.entryEndDate.setDate(this.currentStartDate.getDate() + 1);
+    this.entryStartDate.setDate(this.currentDate.getDate() - 14);
+    this.entryEndDate.setDate(this.currentDate.getDate() + 1);
     this.projectStatus = 'On Track';
   }
 
   getReport(form) {
     if (form.$invalid) return;
-
     let projectJiraAttrs = {
-      username: form.username.$viewValue,
+      endDate: form.until.$viewValue,
+      startDate: form.since.$viewValue,
+      assignee: form.assignee.$viewValue,
+      projectURL: form.projectURL.$viewValue,
       projectName: form.projectName.$viewValue,
       projectStatus: form.projectStatus.$viewValue,
-      startDate: moment(form.since.$viewValue),
-      endDate: moment(form.until.$viewValue),
-      token: form.token.$viewValue,
+      token: this.base64.encode(form.jiraUsername.$viewValue + ":" + form.jiraPassword.$viewValue),
     }
+    this.projectAttrs = projectJiraAttrs;
 
     this.reportService.getJiraIssues(projectJiraAttrs,
       (data) => {
-        this.onReportSuccess(data.issues, projectJiraAttrs);
+        this.onReportSuccess(data, projectJiraAttrs);
       }, (data) => {
-        console.log(data);
+        if (data.status === 401) {
+          this.errorMessage = "Unauthorized, Wrong username or password!"
+        } else {
+          this.errorMessage = "Error : Unable to retrieve data from JIRA!"
+        }
       });
   }
 
   onReportSuccess(results, projectJiraAttrs) {
-
-    var totalIssuesLastWeek = [];
-    var totalIssuesThisWeek = [];
+    this.results = results;
+    this.totalIssuesLastWeek = [];
+    this.totalIssuesThisWeek = [];
     var newIssues = [];
-    _.each(results, function (result) {
-      debugger;
-      if (moment(query.from) <= moment(result.task_updated_date) && moment(query.to) >= moment(result.task_updated_date)) {
-        if (moment(result.task_updated_date) <= moment(query.to) && moment(result.task_updated_date) >= moment(query.to).subtract(5, "d")) {
-          totalIssuesThisWeek.push(result);
+
+    results.forEach((result) => {
+      if (moment(projectJiraAttrs.startDate) <= moment(result.task_updated_date) && moment(projectJiraAttrs.endDate) >= moment(result.task_updated_date)) {
+        if (moment(result.task_updated_date) <= moment(projectJiraAttrs.endDate) && moment(result.task_updated_date) >= moment(projectJiraAttrs.endDate).subtract(5, "d")) {
+          this.totalIssuesThisWeek.push(result);
         } else {
-          totalIssuesLastWeek.push(result)
+          this.totalIssuesLastWeek.push(result)
         }
       } else {
         if (result.task_status === 'To Do') {
-          totalIssuesThisWeek.push(result);
+          this.totalIssuesThisWeek.push(result);
         }
       }
     }, this);
+  }
+
+  getDate(date) {
+    return moment(date).format('MM/DD/YYYY');
   }
 }
 

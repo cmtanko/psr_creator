@@ -24,6 +24,8 @@ import "jquery";
 
 import "angular-resource";
 
+import "angular-base64";
+
 
 
 // local scripts
