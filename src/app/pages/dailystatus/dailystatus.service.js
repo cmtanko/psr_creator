@@ -33,10 +33,11 @@ class GitReportService {
                 this.repoDatas = [];
 
                 results.forEach(function (c) {
-                    let createdDate = moment.utc(c.created_at).format('YYYY-MM-DD');
+                    let createdDate = moment(c.created_at).format('YYYY-MM-DD');
+                    let queryDate = moment(query.date).format('YYYY-MM-DD');
                     let repoData = {};
-                    if (moment(query.date).isSame(createdDate) && c.type === 'PushEvent') {
-                        _.each(c.payload.commits, function (commit) {
+                    if (createdDate === queryDate && c.type === 'PushEvent') {
+                        c.payload.commits.forEach(function (commit) {
                             if (_.get(commit, 'message').toLowerCase().indexOf('merged') === -1) {
                                 repoData = {
                                     commitMessage: commit.message,
@@ -44,13 +45,11 @@ class GitReportService {
                                     committedDate: c.created_at,
                                 };
                             }
-
+                            this.repoDatas.push(repoData);
                         }, this);
-
-                        this.repoDatas.push(repoData);
                     }
 
-                    if (moment(query.date).isSame(createdDate) && c.type === 'PullRequestEvent') {
+                    if (createdDate === queryDate && c.type === 'PullRequestEvent') {
                         this.$resource(_.get(c.payload.pull_request, 'commits_url'),
                             {},
                             {

@@ -16,7 +16,7 @@ class DailyStatusController {
     initialize() {
         this.results = [];
         this.currentDate = new Date();
-        this.currentDate.setDate(this.currentDate.getDate() - 14);
+        this.currentDate.setDate(this.currentDate.getDate());
     }
 
     getReport(form) {
