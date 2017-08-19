@@ -17,31 +17,32 @@ import statusModule from './pages/dailystatus/dailystatus.module';
 
 
 const App = angular.module(
-  "PSR Generator", [
+  'PSR Generator', [
     // plugins
-    uiRouter,
-    "ngAnimate", 
-	"ngCookies", 
-	"ngTouch", 
-	"ngSanitize", 
-	"ngMessages", 
-	"ngAria", 
-  "ngResource",
-  "base64",
+      uiRouter,
+      'ngAnimate', 
+      'ngCookies', 
+      'ngTouch', 
+      'ngSanitize', 
+      'ngMessages', 
+      'ngAria', 
+      'ngResource',
+      'base64',
+      'blockUI',
 
     // core
-    coreModule.name,
+      coreModule.name,
 
     // components
-    indexComponents.name,
+      indexComponents.name,
 
     // routes
-    indexRoutes.name,
+      indexRoutes.name,
 
     // pages
-    mainModule.name,
-    reportModule.name,
-    statusModule.name
+      mainModule.name,
+      reportModule.name,
+      statusModule.name
   ]
 );
 

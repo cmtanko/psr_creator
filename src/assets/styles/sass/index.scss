@@ -12,6 +12,18 @@ body {
   background-color:#efefef;
 }
 
+.block-ui-message {
+	background-color: transparent !important;
+	position: absolute;
+	top: calc(50% - 35px);
+	left: calc(50% - 35px);
+	width: 40px;
+	height: 40px;
+	img {
+		width: 100%;
+	}
+}
+
 h1,h2,h3,.highlight,#masthead h4 {
   font-family:'Oswald',arial narrow,sans-serif;
 }
