@@ -3,13 +3,14 @@
 import moment from 'moment';
 
 class DailyStatusController {
-    constructor($log, $base64, dailyReportService) {
+    constructor($log, $base64, dailyReportService, blockUI) {
         'ngInject';
         $log.debug('Hello from report controller!');
 
         // SET DEFAULT DATES
         this.initialize();
         this.moment = moment;
+        this.pageblock = blockUI.instances.get('pageblock');
         this.dailyReportService = dailyReportService;
     }
 
@@ -21,6 +22,7 @@ class DailyStatusController {
 
     getReport(form) {
         if (form.$invalid) { return; }
+        this.pageblock.start();
         let gitAttrs = {
             date: form.date.$viewValue,
             username: form.username.$viewValue,
@@ -30,12 +32,14 @@ class DailyStatusController {
         this.dailyReportService.getGitReport(gitAttrs,
             (data) => {
                 this.onGitDataRetrievedSuccess(data, gitAttrs);
+                this.pageblock.stop();
             }, (data) => {
                 if (data.status === 401) {
                     this.errorMessage = 'Unauthorized, Wrong username or password!';
                 } else {
                     this.errorMessage = 'Error : Unable to retrieve data from JIRA!';
                 }
+                this.pageblock.stop();
             });
     }
 

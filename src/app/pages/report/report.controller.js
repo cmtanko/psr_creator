@@ -3,15 +3,15 @@
 import moment from 'moment';
 
 class ReportController {
-    constructor($log, $base64, reportService) {
+    constructor($log, $base64, reportService, blockUI) {
         'ngInject';
         $log.debug('Hello from report controller!');
 
-    // SET DEFAULT DATES
+        // SET DEFAULT DATES
         this.initialize();
         this.moment = moment;
         this.base64 = $base64;
-
+        this.pageblock = blockUI.instances.get('pageblock');
         this.reportService = reportService;
     }
 
@@ -26,7 +26,8 @@ class ReportController {
     }
 
     getReport(form) {
-        if (form.$invalid) {return;}
+        if (form.$invalid) { return; }
+        this.pageblock.start();
         let projectJiraAttrs = {
             endDate: form.until.$viewValue,
             startDate: form.since.$viewValue,
@@ -38,15 +39,17 @@ class ReportController {
         };
         this.projectAttrs = projectJiraAttrs;
         this.reportService.getJiraIssues(projectJiraAttrs,
-      (data) => {
-          this.onReportSuccess(data, projectJiraAttrs);
-      }, (data) => {
-          if (data.status === 401) {
-              this.errorMessage = 'Unauthorized, Wrong username or password!';
-          } else {
-              this.errorMessage = 'Error : Unable to retrieve data from JIRA!';
-          }
-      });
+            (data) => {
+                this.pageblock.stop();
+                this.onReportSuccess(data, projectJiraAttrs);
+            }, (data) => {
+                if (data.status === 401) {
+                    this.errorMessage = 'Unauthorized, Wrong username or password!';
+                } else {
+                    this.errorMessage = 'Error : Unable to retrieve data from JIRA!';
+                }
+                this.pageblock.stop();
+            });
     }
 
     onReportSuccess(results, projectJiraAttrs) {
