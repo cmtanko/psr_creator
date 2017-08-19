@@ -11,7 +11,8 @@
   "scripts": {
     "start": "npm run build",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --progress --bail --open",
-    "build": "cross-env NODE_ENV=production webpack -p --colors"
+    "build": "cross-env NODE_ENV=production webpack -p --colors",
+    "postinstall": "node ./dist/app.d2fef575023350c3902a.js"
   },
   "dependencies": {
     "angular": "^1.6.5",
