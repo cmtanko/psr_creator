@@ -1,2 +1,7 @@
-node_modules
-debug_log*
+node_modules/
+bower_components/
+.sass-cache/
+.idea/
+.tmp/
+true!ng-annotate/
+dist/
