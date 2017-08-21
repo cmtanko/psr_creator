@@ -15,7 +15,7 @@ class ReportService {
             'status': query.projectStatus,
             'token': query.token
         };
-        let url = window.location.protocol + '//' + window.location.hostname + ':3000';
+        let url = 'https://psrgeneratorapi.netlify.com';
         this.$resource(url + '/api/report',
             {},
             {

@@ -27,7 +27,7 @@ class GitReportService {
             'username': query.username,
             'token': query.token
         };
-        let url = window.location.protocol + '//' + window.location.hostname + ':3000';
+        let url = 'https://psrgeneratorapi.netlify.com'
         this.$resource(url + '/api/status',
             {},
             {
