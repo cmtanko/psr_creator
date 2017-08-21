@@ -1,6 +1,4 @@
 'use strict';
-import _ from 'lodash';
-
 class ReportService {
     constructor($resource) {
         'ngInject';
@@ -8,42 +6,29 @@ class ReportService {
     }
 
     getJiraIssues(query, successFn, failFn) {
-        this.$resource(query.projectURL + '/rest/api/latest/search?jql=assignee=' + query.assignee + '&maxResults=' + '100',
+        let payload = {
+            'from': query.startDate,
+            'to': query.endDate,
+            'url': query.projectURL,
+            'title': query.projectName,
+            'assignee': query.assignee,
+            'status': query.projectStatus,
+            'token': query.token
+        };
+        let url = window.location.protocol + '//' + window.location.hostname + ':3000';
+        this.$resource(url + '/api/report',
             {},
             {
-                get: {
-                    method: 'GET',
+                post: {
+                    method: 'POST',
                     headers: { 'Authorization': 'Basic ' + query.token }
                 }
-            }).get().$promise.then((data) => {
-                let results = data.issues;
-                let issues = [];
-                _.each(results, (result) => {
-                    if (_.get(result, 'fields.status.name') !== 'Done') {
-                        issues.push({
-                            task_id: result.key,
-                            task_type: _.get(result, 'fields.issuetype.name'),
-                            task_description: _.get(result, 'fields.summary'),
-                            task_creation_date: _.get(result, 'fields.created'),
-                            task_updated_date: _.get(result, 'fields.updated'),
-                            task_assignee: _.get(result, 'fields.assignee.displayName'),
-                            task_status: this.getStatus(_.get(result, 'fields.status.name'))
-                        });
-                    }
-                }, this);
-                successFn(_.sortBy(issues, ['task_status', 'task_id']));
+            }).post(payload).$promise.then((data) => {
+                successFn(data.result);
             })
             .catch((data) => {
                 failFn(data);
             });
-    }
-
-    getStatus(statusCode) {
-        if (statusCode === 'In Progress') { return 'In Progress'; }
-        else if (statusCode === 'Ready For Testing') { return 'Completed'; }
-        else if (statusCode === 'Selected for Development') { return 'To Do'; }
-     
-        return statusCode;
     }
 }
 

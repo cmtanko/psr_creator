@@ -21,17 +21,23 @@ class GitReportService {
     }
 
     getGitReport(query, successFn, failFn) {
-        this.$resource('https://api.github.com/repos/' + query.username + '/' + query.reponame + '/events?',
+        let payload = {
+            'date': query.date,
+            'reponame': query.reponame,
+            'username': query.username,
+            'token': query.token
+        };
+        let url = window.location.protocol + '//' + window.location.hostname + ':3000';
+        this.$resource(url + '/api/status',
             {},
             {
-                get: {
-                    method: 'GET',
-                    isArray: true,
+                post: {
+                    method: 'POST',
                     headers: { 'Authorization': 'token ' + query.token }
                 }
-            }).get().$promise.then((results) => {
+            }).post(payload).$promise.then((data) => {
                 this.repoDatas = [];
-
+                let results = data.result;
                 results.forEach(function (c) {
                     let createdDate = moment(c.created_at).format('YYYY-MM-DD');
                     let queryDate = moment(query.date).format('YYYY-MM-DD');
@@ -70,6 +76,7 @@ class GitReportService {
                 }, this);
 
                 setTimeout(() => {
+                    this.repoDatas.push({});
                     successFn(this.repoDatas);
                 }, 8000);
             })
