@@ -29,13 +29,16 @@ var _bodyParser2 = _interopRequireDefault(_bodyParser);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
+var port = process.env.PORT || 3000;
 app.use((0, _cors2.default)());
 app.use(_bodyParser2.default.json());
 app.use('/api', _routes2.default);
 app.use(_express2.default.static(_path2.default.join(__dirname, '/../public')));
-
-app.listen(8080, function () {
-  console.log('app listening on', '8080');
+app.get('/', function (req, res) {
+  res.send({ 'result': 'Here' });
+});
+app.listen(port, function () {
+  console.log('app listening on', port);
 });
 
 exports.default = app;
