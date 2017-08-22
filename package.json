@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/api",
   "scripts": {
-    "start": "babel-watch src/api.js",
+    "start": "node dist/api.js",
+    "dev": "babel-watch src/api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
