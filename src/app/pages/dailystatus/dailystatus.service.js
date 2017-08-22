@@ -27,7 +27,7 @@ class GitReportService {
             'username': query.username,
             'token': query.token
         };
-        let url = 'https://psrgeneratorapi.netlify.com'
+        let url = 'https://psrgenerator.herokuapp.com/'
         this.$resource(url + '/api/status',
             {},
             {

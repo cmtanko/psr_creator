@@ -15,7 +15,7 @@ class ReportService {
             'status': query.projectStatus,
             'token': query.token
         };
-        let url = 'https://psrgeneratorapi.netlify.com';
+        let url = 'https://psrgenerator.herokuapp.com/';
         this.$resource(url + '/api/report',
             {},
             {
