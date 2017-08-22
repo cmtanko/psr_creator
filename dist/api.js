@@ -10,6 +10,14 @@ var _cors = require('cors');
 
 var _cors2 = _interopRequireDefault(_cors);
 
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _routes = require('./routes');
+
+var _routes2 = _interopRequireDefault(_routes);
+
 var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
@@ -23,14 +31,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var app = (0, _express2.default)();
 app.use((0, _cors2.default)());
 app.use(_bodyParser2.default.json());
+app.use('/api', _routes2.default);
+app.use(_express2.default.static(_path2.default.join(__dirname, '/../public')));
 
-app.get('/report', function (req, res) {
-  console.log(req.body);
-  res.send('hi');
-});
-
-app.listen(3000, function () {
-  console.log('app listening on ', '3000');
+app.listen(8080, function () {
+  console.log('app listening on', '8080');
 });
 
 exports.default = app;
+//# sourceMappingURL=api.js.map

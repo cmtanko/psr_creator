@@ -2,10 +2,10 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/api",
+  "main": "dist/api.js",
   "scripts": {
     "start": "node dist/api.js",
-    "dev": "babel-watch src/api.js",
+    "dev":  "babel -d ./dist ./src -s",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

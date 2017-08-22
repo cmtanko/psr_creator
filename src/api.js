@@ -6,13 +6,14 @@ import express from  'express';
 import bodyParser from 'body-parser';
 
 const app = express();
+var port = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', routes);
 app.use(express.static(path.join(__dirname, '/../public')));
 
-app.listen(3000, function () {
- console.log('app listening on', '3000');
+app.listen(port, function () {
+ console.log('app listening on', port);
 })
 
 export default app;
