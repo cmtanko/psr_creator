@@ -10,6 +10,9 @@ const getStatus = (statusCode) => {
 
   return statusCode;
 };
+router.get('/abc', (req,res,next) =>{
+  res.send('asdfasdfsdf');
+});
 
 router.post('/', (req, res, next) => {
   let query = req.body;
