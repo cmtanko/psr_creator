@@ -4,7 +4,7 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
 
 /* override bootstrap styles */
-@import url('http://fonts.googleapis.com/css?family=Oswald:300,400:latin,latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Oswald:300,400:latin,latin-ext');
 
 body {
 //   padding-top:50px;
@@ -95,7 +95,6 @@ a,a:hover {
 }
 
 .ritz .waffle .s9 {
-    border-right: none;
     background-color: #c4d79b;
     text-align: left;
     color: #000000;
@@ -112,7 +111,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s11 {
-    border: 1px SOLID #000000;
+    border-style: solid;
     background-color: #ffffff;
     text-align: center;
     color: #000000;
@@ -125,7 +124,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s8 {
-    border: 1px SOLID #000000;
+    border-style: solid;
     background-color: #c4d79b;
     text-align: left;
     color: #000000;
@@ -138,8 +137,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s3 {
-    border-bottom: 1px SOLID #000000;
-    border-right: 1px SOLID #000000;
+    border-style: solid;
     background-color: #ffffff;
     text-align: right;
     color: #000000;
@@ -154,8 +152,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s5 {
-    border-bottom: 1px SOLID #000000;
-    border-right: 1px SOLID #000000;
+    border-style: solid;
     background-color: #ffffff;
     text-align: left;
     color: #000000;
@@ -168,7 +165,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s2 {
-    border: 1px SOLID #000000;
+    border-style: solid;
     background-color: #ffffff;
     text-align: right;
     color: #000000;
@@ -183,7 +180,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s10 {
-    border: 1px SOLID #000000;
+    border-style: solid;
     background-color: #ffffff;
     text-align: right;
     color: #000000;
@@ -196,7 +193,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s1 {
-    border: 1px SOLID #000000;
+    border-style: solid;
     background-color: #ffffff;
     text-align: left;
     color: #000000;
@@ -211,7 +208,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s0 {
-    border: 1px SOLID #000000;
+    border-style: solid;
     background-color: #c4d79b;
     text-align: left;
     color: #000000;
@@ -224,7 +221,7 @@ a,a:hover {
 }
 
 .ritz .waffle .s4 {
-    border: 1px SOLID #000000;
+    border-style: solid;
     background-color: #b7e1cd;
     text-align: left;
     font-weight: bold;
@@ -240,7 +237,8 @@ a,a:hover {
 }
 
 .ritz .waffle .s7 {
-    border: 1px SOLID #000000;
+border-style: solid;
+    border-style: solid;
     background-color: #ffffff;
     text-align: left;
     color: #000000;
