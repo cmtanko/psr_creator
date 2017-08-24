@@ -31,7 +31,8 @@ class DailyStatusController {
         };
         this.dailyReportService.getGitReport(gitAttrs,
             (data) => {
-                this.onGitDataRetrievedSuccess(data, gitAttrs);
+                this.commitsByUsers = data.commitsByUsers;
+                this.repoDatas = data.repoDatas;
                 this.pageblock.stop();
             }, (data) => {
                 if (data.status === 401) {
