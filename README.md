@@ -1,7 +1,7 @@
 # PSR Generator
+(AngularJS1.6 , Webpack , ES6)
 
 Mostly every organization keeps track of the project as daily report or weekly or monthly. Most uses Jira for project management and github for version control. So this psrgenerator generates
-AngularJS1.6 , Webpack , ES6
 
 **Daily Report** based on that day's commits from git. It will also show the task state completed/InProgress and total time required to do that task and total hours spent on that day
   ** Prerequisite: **
